@@ -10,7 +10,7 @@ def main():
         channel.queue_declare('CreditCardData')
         channel.exchange_declare(exchange='fraudDetection',exchange_type='direct')
         channel.queue_bind('CreditCardData','fraudDetection','CreditCardData')
-        with open('model.pkl','rb') as f:
+        with open('sample//model.pkl','rb') as f:
             model = pickle.load(f)
         def callback(ch, method, properties, body):
             unserialized=pickle.loads(body)
