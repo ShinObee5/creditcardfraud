@@ -67,3 +67,4 @@ print('Accuracy score of the XGBoost model is {}'.format(accuracy_score(y_test, 
 
 print('F1 score of the XGBoost model is {}'.format(f1_score(y_test, xgb_yhat)))
 
+##As xgb has the highest accuracy, we are selecting it.
