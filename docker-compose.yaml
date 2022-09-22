@@ -12,5 +12,20 @@ services:
       - RABBITMQ_DEFAULT_PASS=adi
     networks:
       - network
+  
+  consumer:
+    build: consumer
+    environment:
+      - AMQP_URL='amqp://adi:adi@rabbitmq?connection_attempts=5&retry_delay=5'
+    networks:
+      - network
+
+  producer:
+    build: producer
+    environment:
+      - AMQP_URL='amqp://adi:adi@rabbitmq?connection_attempts=5&retry_delay=5'
+    networks:
+      - network
+
 networks:
   network: {}

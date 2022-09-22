@@ -8,6 +8,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import f1_score,confusion_matrix,accuracy_score
 from sklearn.linear_model import LogisticRegression
 import xgboost as xgb
+import pickle
+
 data=pd.read_csv("creditcard.csv")
 sc = StandardScaler()
 amount = data['Amount'].values
@@ -64,7 +66,9 @@ xgb.fit(X_train, y_train)
 xgb_yhat = xgb.predict(X_test)
 
 print('Accuracy score of the XGBoost model is {}'.format(accuracy_score(y_test, xgb_yhat)))
-
 print('F1 score of the XGBoost model is {}'.format(f1_score(y_test, xgb_yhat)))
 
+print('Trying to Pickle.....')
+with open("consumer//model.pkl",'wb') as f:
+    pickle.dump(xgb,f)
 ##As xgb has the highest accuracy, we are selecting it.
