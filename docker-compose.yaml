@@ -16,14 +16,20 @@ services:
   consumer:
     build: consumer
     environment:
-      - AMQP_URL='amqp://adi:adi@rabbitmq?connection_attempts=5&retry_delay=5'
+      - MODE=docker
+      - RABBITMQ_URL=amqp://adi:adi@rabbitmq/
+    depends_on:
+      - rabbitmq
     networks:
       - network
 
   producer:
     build: producer
     environment:
-      - AMQP_URL='amqp://adi:adi@rabbitmq?connection_attempts=5&retry_delay=5'
+      - MODE=docker
+      - RABBITMQ_URL=amqp://adi:adi@rabbitmq/
+    depends_on:
+      - rabbitmq
     networks:
       - network
 

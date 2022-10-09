@@ -1,4 +1,3 @@
-from symbol import parameters
 import pandas as pd
 import pickle
 import pika
@@ -7,11 +6,31 @@ import os
 
 data = pd.read_csv('sampledat.csv')
 
-parameters = pika.URLParameters(os.environ['AMQP_URL'])
-connection = pika.BlockingConnection(parameters=parameters)
-channel = connection.channel()
-channel.exchange_declare(exchange='fraudDetection',exchange_type='direct')
+credentials = pika.PlainCredentials(os.environ.get('RABBITMQ_DEFAULT_USER'), os.environ.get('RABBITMQ_DEFAULT_PASS'))
+f=1
+if not os.environ.get('MODE'):
+    while(f):
+        print(f"Trying to Establish Connection {f}")
+        try:
+            connection = pika.BlockingConnection(pika.ConnectionParameters('localhost',port=5672,credentials=credentials))
+            f=0
+        except:
+            time.sleep(10)
+            f=1
+else:
+    while(f):
+        print(f"Trying to Establish Connection {f}")
+        try:
+            connection = pika.BlockingConnection(pika.URLParameters(os.environ.get('RABBITMQ_URL')))
+            f=0
+        except:
+            time.sleep(10)
+            f=1
 
+channel = connection.channel()
+channel.queue_declare('CreditCardData')
+channel.exchange_declare(exchange='fraudDetection',exchange_type='direct')
+channel.queue_bind('CreditCardData','fraudDetection','CreditCardData')
 
 for i in range(len(data)):
     serialized = pickle.dumps({'row':data.iloc[i]})

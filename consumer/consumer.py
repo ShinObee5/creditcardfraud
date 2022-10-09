@@ -5,8 +5,26 @@ import pandas as pd
 from xgboost import XGBClassifier
 COUNT=0
 def main():
-        parameters = pika.URLParameters(os.environ['AMQP_URL'])
-        connection = pika.BlockingConnection(parameters=parameters)
+        credentials = pika.PlainCredentials(os.environ.get('RABBITMQ_DEFAULT_USER'), os.environ.get('RABBITMQ_DEFAULT_PASS'))
+        f=1
+        if not os.environ.get('MODE'):
+            while(f):
+                print(f"Trying to Establish Connection {f}")
+                try:
+                    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost',port=5672,credentials=credentials))
+                    f=0
+                except:
+                    time.sleep(10)
+                    f=1
+        else:
+            while(f):
+                print(f"Trying to Establish Connection using URL {f}")
+                try:
+                    connection = pika.BlockingConnection(pika.URLParameters(os.environ.get('RABBITMQ_URL')))
+                    f=0
+                except:
+                    time.sleep(10)
+                    f=1
         channel = connection.channel()
         channel.queue_declare('CreditCardData')
         channel.exchange_declare(exchange='fraudDetection',exchange_type='direct')

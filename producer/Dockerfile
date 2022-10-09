@@ -1,4 +1,4 @@
-FROM python:3.9.14-alpine3.16
+FROM python:3.9.14-slim-buster
 
 
 # Actually install the application
@@ -7,8 +7,7 @@ WORKDIR /usr/src/app
 # Dockerfile, or a subdirectory, but not a parent or sibling.
 COPY requirements.txt .
 COPY sampledat.csv .
-RUN echo "http://dl-8.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN apk --no-cache --update-cache add gcc gfortran python python-dev py-pip build-base wget freetype-dev libpng-dev openblas-dev
+RUN apt-get update
 RUN pip install -r requirements.txt
 COPY producer.py .
 
