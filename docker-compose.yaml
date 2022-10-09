@@ -18,6 +18,8 @@ services:
     environment:
       - MODE=docker
       - RABBITMQ_URL=amqp://adi:adi@rabbitmq/
+    ports:
+      - '8000:8000'
     depends_on:
       - rabbitmq
     networks:

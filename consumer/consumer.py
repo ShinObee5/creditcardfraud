@@ -43,6 +43,13 @@ def main():
             status = 'Legit' if answer else 'Fraud'
             print(f"Transaction #{COUNT} is {status}")
             COUNT+=1
+            single_row['Result']=answer
+            dat=pd.read_csv('processed.csv')
+            dat=pd.concat([dat,single_row],ignore_index=True)
+            dat.reset_index()
+            print(dat)
+            dat.to_csv('processed.csv', index=False)
+            time.sleep(5)
 
         channel.basic_consume(queue='CreditCardData', on_message_callback=callback, auto_ack=True)
         print(' [*] Waiting for messages. To exit press CTRL+C')

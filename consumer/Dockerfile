@@ -8,6 +8,11 @@ RUN apt-get update
 RUN pip install -r requirements.txt
 COPY consumer.py .
 COPY model.pkl .
+COPY templates/home.html templates/home.html
+COPY app.py .
+COPY processed.csv .
+COPY start.sh .
 # When you just 'docker run publisher' with no command afterwards,
 # default to this:
-CMD ["python", "/usr/src/app/consumer.py"]
+EXPOSE 8000
+CMD ["bash", "/usr/src/app/start.sh"]
