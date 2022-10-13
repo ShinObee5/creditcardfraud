@@ -4,15 +4,11 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h3 align="center">Frodo</h3>
+<img src="imgs/frodo.png" alt="output_dat" >
 </div>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-<div align="center">
-<img src="imgs/frodo.png" alt="output_dat" >
-</div>
 
 Frodo is a Near Real-Time Credit Card Fraud Detection Simulation. It simulates how a producer ideally a bank or any commercial banking software can make sure the credit card transactions carried out are valid to an extent. The simulation consists for three major components. The producer, the consumer and the dashboard. The producer as mentioned before being the banks, commercial softwares, the consumer being the machine learning model trained on the Credit Card dataset from Kaggle using an XGBoost Classifier and finally an App that displays the result in real-time developed using the Flask microframework.
 
@@ -24,125 +20,42 @@ Frodo is a Near Real-Time Credit Card Fraud Detection Simulation. It simulates h
 
 ### Packages Used
 
-
 * Flask
-* Flask-SQLAlchemy
-* Psycopg2
-* Flask-Mail
-* Flask-Login
-* Flask-Migrate
+* SQLAlchemy
 * Pika
-* APScheduler
+* XGBoost
+* NumPy
+* Pandas
 
 ### File Structure
-/root -> Houses the Main API and the Mailing and Scheduler Services as 2 different folders 
 
-/root/mailer -> Mailing Service 
-
-/root/scheduler -> Schduler CRON Job that Checks the PostGresQL database for triggering any alerts 
-
-
+- `sample/` - Directory containing code that was used to initially test the XGBoost Model
+- `consumer/` - Directory housing the 2 essential components of the whole project, the **consumer** and the **dashboard**
+- `producer/` - Directory containing code to emulate data producers like ATM, banking software etc.,
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Components
 
-To run the code as of now first start the PostGres and RabbitMQ services. After that start the Main API followed by the scheduler and mailer services.
+1. Consumer
 
-Requests to the API will create alerts: 
- 
- * `/auth/register` - To create a user. `email` and `password` have to be passed in.
- * `/auth/login` - Logs in valid users and returns `token`.
- * `/alerts/create` - Creates a new alert
- * `/alerts/delete` - Deletes an alert
- * `/alerts/fetch_all` - Returns list of all alerts created so far
- * `/alerts/fetch_all/<FILTER>` - Returns the list filtered by status, which can be one of "TRIGGERED", "CREATED", "DELETED"
- 
+This microservice has 2 functinalities or in other words two main purposes to it. The first one being receiving the data and getting the output from the machine learning model and saving the data in the database and the second one being exposing the webapp that will fetch and display the data from the database as it keeps getting updated.
+ - `app.py` - Flask Application that renders the UI and keeps it updated with the latest entries in the database
+ -  `consumer.py` - Consumer Application that reads from Queue and predicts the output. The consumer program can be run using the `--restart` flag to recreate the tables while working in local system.
+ -  `model.py` - Schema definition for the transaction database model
+ -  `start.sh` - Bashscript for starting both the listener service and the web service
 
-## Examples
+2. Producer
 
-
- Making an invalid login request
-   
- 
-
-<div align="center">
-<img src="imgs/invalidlog.png" alt="output_dat" >
-</div>
-
-<br>
-<br>
-
-
- Making an account and retrieving the token
-   
-   
-<div align="center">
-<img src="imgs/register.png"  >
-</div>
-
-Making the Alert
-<div align="center">
-<img src="imgs/createalert.png" >
-</div>
-
-Fetching Alerts
-<div align="center">
-<img src="imgs/fetch.png"  >
-</div>
-
-Email Triggered for Alert
-<div align="center">
-<img src="imgs/email Triggered by scheduler.png"  >
-</div>
-
-Email Triggered By Mailing Service which was received from RabbitMQ
-<div align="center">
-<img src="imgs/emailreceivedatmailer.png"  >
-</div>
-
-Updated Database
-<div align="center">
-<img src="imgs/updateddb.png"  >
-</div>
+This microservice emulates the real time data senders. The producer has with it a CSV file consisting of about 700 rows of data which is fed into the queue for the consumption of the consumer. The rate of dispatch is 1 row per 5s.
+  
 
 ## How to Run
 - Setup a virtual environment and then run `pip install -r requirements.txt` in root folder 
-- Start PostgreSQL service with username as user and password as pass. If you have an existing server then just create an environment variable `DB_URI` as  `postgres://user:password@localhost:port`
-- For running main server set environment variable `FLASK_APP` as `Krypto.py`, while running the first time run the following commands `flask db init`, `flask db migrate`, `flask db upgrade`
-- Now use `python Krypto.py` the server will start and the API is accessible at port 8000
-- Start the RabbitMQ service using `docker run -d --hostname my-rabbit --name some-rabbit -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3-management`
-- Now cd into scheduler service and start that service using `python scheduler.py`, this service wil fetch untriggered alerts and check if they have to be triggered, in that case a request is placed on the rabbit mq broker.
-- Now cd into mailer folder and start the flask_mail.py service. This service listens to the RabbitMQ broker and processes or consumes the requests as they come in.
-- The request is then printed onto the console.
-
-<!-- ROADMAP -->
-## Tasks Done
-
-- [x] Create API Endpoint for creating an alert
-- [x] Creating API Endpoint for deleting an alert
-- [x] Creating API Endpoint for fetching all alerts
-- [x] Creating API Endpoint to return alerts filtered by status
-- [ ] Paginate the response
-- [x] Add User Authentication with JWT
-- [x] Make use of coingecko API for price checking
-- [x] Printing the mail procedure to console as google removed access to less secure apps for my account
-- [ ] Adding a cache layer for the fetch_all endpoint
-- [x] Use PostGres
-- [x] Use RabbitMQ
-- [ ] Bundle in Docker-Compose
+- Clone the repository using `git clone <url>`
+- Run the command `docker-compose up`
+- All services should be running as containers
+- Now one can check `127.0.0.1:8000` for updated row entries of creditcard data
 
 
 
 
-
-## Contact
-
-Adithya Narayan - [@a.dity.a_n.araya.n](https://www.instagram.com/a.dity.a_n.araya.n/?hl=en) - adithyanarayan1234@gmail.com
-
-
-
-
-
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/adithya-narayan-3747081a3/
-[product-screenshot]: images/screenshot.png
