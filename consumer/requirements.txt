@@ -1,4 +1,12 @@
+click==8.1.3
+colorama==0.4.5
+Flask==2.2.2
+greenlet==1.1.3.post0
+importlib-metadata==5.0.0
+itsdangerous==2.1.2
+Jinja2==3.1.2
 joblib==1.2.0
+MarkupSafe==2.1.1
 numpy==1.23.3
 pandas==1.4.4
 pika==1.3.0
@@ -8,6 +16,9 @@ scikit-learn==1.1.2
 scipy==1.9.1
 six==1.16.0
 sklearn==0.0
+SQLAlchemy==1.4.41
+SQLAlchemy-Utils==0.38.3
 threadpoolctl==3.1.0
+Werkzeug==2.2.2
 xgboost==1.6.2
-flask
+zipp==3.9.0

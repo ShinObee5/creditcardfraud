@@ -13,11 +13,22 @@ services:
     networks:
       - network
   
+  database:
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=adi
+      - POSTGRES_PASSWORD=adi
+    networks:
+      - network
+
   consumer:
     build: consumer
     environment:
       - MODE=docker
       - RABBITMQ_URL=amqp://adi:adi@rabbitmq/
+      - POSTGRESQL_URL=postgresql+psycopg2://adi:adi@database:5432/transactions
     ports:
       - '8000:8000'
     depends_on:

@@ -5,12 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="5">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Transaction Results</title>
 </head>
-<body>
-    <div class=page>
-        <h1>Results</h1>
-          {{ table|safe }}
+<body class=" bg-gray-800 ">
+    <div class="flex flex-col">
+        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+          <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="overflow-hidden">
+              <table class="min-w-full text-center">
+                <thead class="border-b">
+                  <tr>
+                    <th scope="col" class="text-sm font-medium text-white  px-6 py-4">
+                      Time
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-white  px-6 py-4">
+                      Amount
+                    </th>
+                    <th scope="col" class="text-sm font-medium text-white  px-6 py-4">
+                      Class
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for tuple in tuples %}
+                  <tr class=" bg-gray-800 ">
+                    <td class="text-sm text-white font-medium px-6 py-4 whitespace-nowrap">
+                      {{tuple.time}}
+                    </td>
+                    <td class="text-sm text-white font-light px-6 py-4 whitespace-nowrap">
+                        {{tuple.amount}}
+                    </td>
+                    <td class="text-sm text-white font-light px-6 py-4 whitespace-nowrap">
+                        {{tuple.Class}}
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 </body>
 </html>
