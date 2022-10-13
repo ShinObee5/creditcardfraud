@@ -10,6 +10,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
+<div align="center">
+<img src="imgs/projectchart.png" alt="output_dat" >
+</div>
+
 Frodo is a Near Real-Time Credit Card Fraud Detection Simulation. It simulates how a producer ideally a bank or any commercial banking software can make sure the credit card transactions carried out are valid to an extent. The simulation consists for three major components. The producer, the consumer and the dashboard. The producer as mentioned before being the banks, commercial softwares, the consumer being the machine learning model trained on the Credit Card dataset from Kaggle using an XGBoost Classifier and finally an App that displays the result in real-time developed using the Flask microframework.
 
 ### Build With
