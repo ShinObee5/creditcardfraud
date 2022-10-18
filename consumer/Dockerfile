@@ -10,4 +10,5 @@ RUN apt-get -y install libpq-dev gcc \
     && pip install psycopg2
 COPY consumer.py .
 COPY model.pkl .
+COPY model.py .
 CMD ["python", "/usr/src/app/consumer.py","--restart"]
