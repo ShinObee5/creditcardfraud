@@ -23,14 +23,24 @@ services:
     networks:
       - network
 
+  backend:
+    build: backend
+    environment:
+      - RABBITMQ_URL=amqp://adi:adi@rabbitmq/
+      - POSTGRESQL_URL=postgresql+psycopg2://adi:adi@database:5432/transactions
+    ports:
+      - '8000:8000'
+    depends_on:
+      - rabbitmq
+    networks:
+      - network
+
   consumer:
     build: consumer
     environment:
       - MODE=docker
       - RABBITMQ_URL=amqp://adi:adi@rabbitmq/
       - POSTGRESQL_URL=postgresql+psycopg2://adi:adi@database:5432/transactions
-    ports:
-      - '8000:8000'
     depends_on:
       - rabbitmq
     networks:

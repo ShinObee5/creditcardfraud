@@ -10,11 +10,4 @@ RUN apt-get -y install libpq-dev gcc \
     && pip install psycopg2
 COPY consumer.py .
 COPY model.pkl .
-COPY templates/home.html templates/home.html
-COPY app.py .
-COPY start.sh .
-COPY model.py .
-# When you just 'docker run publisher' with no command afterwards,
-# default to this:
-EXPOSE 8000
-CMD ["bash", "/usr/src/app/start.sh"]
+CMD ["python", "/usr/src/app/consumer.py","--restart"]
